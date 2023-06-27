@@ -46,11 +46,12 @@ class AudioSet:
         else:
             self.metadata = pd.read_csv(
                 self.metadata_path,
-                index_col=0
+                index_col=0,
+                converters={'labels': eval}
             )
 
     def __iter__(self) -> Iterable[NoiseSegment]:
-        for index, segment in self.metadata.iterrows():
+        for _, segment in self.metadata.iterrows():
             noise_id, start, end, labels = segment
             noise_segment = NoiseSegment(noise_id, start, end, labels)
             yield noise_segment
