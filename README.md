@@ -5,8 +5,8 @@ We want to exclude speech and human vocalizations, keep noise segments
 with only one type of noise and downsample the music.
 
 To do so, we used the metadata and :
-1/ Excluded segments with multiple labels & downsample music
-2/ Applied pyannote VAD and exclude segments with Voice activity detected
+- Excluded segments with multiple labels & downsample music
+- Applied pyannote VAD and exclude segments with Voice activity detected
 
 
 ## Create the metadata
