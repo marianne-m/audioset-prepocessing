@@ -1,14 +1,10 @@
 import argparse
 import sys
 from pathlib import Path
-from dataclasses import dataclass
-from typing import Iterable, Optional, List
-import logging
-import tqdm
 import pandas as pd
 from pyannote.audio import Pipeline
 
-from scripts.datasets import NoiseSegment, AudioSet
+from scripts.datasets import AudioSet
 
 
 MUSIC_IDS = range(137,283)
@@ -124,7 +120,7 @@ def main(argv):
 
     dataset = AudioSet(args.metadata, label_path=args.label_path)
     pipeline = Pipeline.from_pretrained("pyannote/voice-activity-detection",
-                                    use_auth_token="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")
+                                    use_auth_token="YOUR_HUGGINGFACE_TOKEN")
 
     # check if multiple labels
     metadata = dataset.metadata[dataset.metadata.labels.map(len) == 1]
@@ -142,8 +138,7 @@ def main(argv):
 
     metadata["is_music"] = metadata.labels.map(lambda x: x[0] in dict_music)
     music = metadata[metadata["is_music"]]
-    # music = music.sample(25200)
-    music = music.sample(10)
+    music = music.sample(25200)
     not_music = metadata[~metadata["is_music"]]
     dataset.metadata = pd.concat([music, not_music]) \
         .sort_values("file_id") \
